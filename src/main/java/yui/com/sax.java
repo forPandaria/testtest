@@ -24,12 +24,16 @@ public class sax {
 
         //构建SAXParser
         parser = SAXParserFactory.newInstance().newSAXParser();
+
+
         //实例化  DefaultHandler对象
         SaxParseXml parseXml = new SaxParseXml();
+
         //加载资源文件 转化为一个输入流
         InputStream stream = new FileInputStream("ipo.xml");
         //调用parse()方法
         parser.parse(stream, parseXml);
+
         //遍历结果
         System.out.print("sax_done");
 
@@ -40,14 +44,19 @@ public class sax {
 class SaxParseXml extends DefaultHandler {
 
     private int flag = 0;
-    FileWriter abc = null;
-    FileWriter ibm = null;
+    FileWriter abcp = null;
+    FileWriter ibmp = null;
+
     {
 
 
         try {
-            this.abc = new FileWriter("ABC_COMP_SAX.xml", true);
-            this.ibm = new FileWriter("IBM_COMP_SAX.xml", true);
+            this.abcp = new FileWriter("ABC_COMP_SAX.xml", true);
+            this.ibmp = new FileWriter("IBM_COMP_SAX.xml", true);
+            //abcp = new PrintStream(new File("ABC_COMP_SAX.xml"));
+            //ibmp = new PrintStream(new File("IBM_COMP_SAX.xml"));
+
+            //ibmp = new PrintWriter(ibm);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,7 +75,9 @@ class SaxParseXml extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
         if(attributes!=null){
+
             String comp_name = attributes.getValue("", "comp_name");
+
             if(comp_name!=null && comp_name.equals("IBM")){
                 flag = 1;
             }else if (comp_name!=null && comp_name.equals("ABC")){
@@ -75,14 +86,12 @@ class SaxParseXml extends DefaultHandler {
 
         }
 
-        if(flag == 0){
+        if(flag == 0) {
             try {
-
-                this.abc.write( "<"+qName+">");
-                this.ibm.write( "<"+qName+">");
-                this.abc.flush();
-                this.ibm.flush();
-
+                this.abcp.write("<" + qName + ">");
+                this.ibmp.write("<" + qName + ">");
+                this.abcp.flush();
+                this.ibmp.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -90,26 +99,23 @@ class SaxParseXml extends DefaultHandler {
 
         if(flag==1){
             try {
-                this.ibm.write( "<"+qName+">");
-                this.ibm.flush();
+                this.ibmp.write( "<"+qName+">");
+                this.ibmp.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
         if(flag==2){
+            //abc.write("give me five\n");
+            //this.abc.write( ("<"+qName+">\r\n"));
             try {
-                this.abc.write( ("<"+qName+">\r\n"));
-                this.abc.flush();
-                System.out.print("<"+qName+">");
+                this.abcp.write("<"+qName+">");
+                this.abcp.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
-
-
-
     }
 
 
@@ -120,33 +126,42 @@ class SaxParseXml extends DefaultHandler {
         if(qName.equals("purchaseOrders")) flag=0;
 
         if(flag == 0){
-            try {
-                this.abc.write( ("</"+qName+">") );
-                this.ibm.write( ("</"+qName+">") );
-                this.abc.flush();
-                this.ibm.flush();
 
+            try {
+                this.abcp.write( ("</"+qName+">") );
+                this.ibmp.write( ("</"+qName+">") );
+                this.abcp.flush();
+                this.ibmp.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+
+
         }
 
         if(flag==1){
+
             try {
-                this.ibm.write( ("</"+qName+">"));
-                this.ibm.flush();
+                this.ibmp.write( ("</"+qName+">"));
+                this.ibmp.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //
+
         }
 
         if(flag==2){
+
             try {
-                this.abc.write( ("</"+qName+">"));
-                this.abc.flush();
+                this.abcp.write("</"+qName+">");
+                this.abcp.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //
+
         }
 
 
@@ -156,26 +171,40 @@ class SaxParseXml extends DefaultHandler {
     //只调用一次
     @Override
     public void endDocument() throws SAXException {
+        try {
+            abcp.close();
+            ibmp.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     //调用多次
     @Override
     public void characters(char[] ch, int start, int length)
             throws SAXException {
+        String s = new String(ch, start, length);
 
         if(flag==1){
             try {
-                this.ibm.write( ch.toString());
-                this.ibm.flush();
+                //this.ibmp.write( new String(ch) );
+
+                this.ibmp.write(s);
+                this.ibmp.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+
         }
 
         if(flag==2){
             try {
-                this.abc.write( ch.toString());
-                this.abc.flush();
+
+                //this.ibmp.write(s);
+                this.abcp.write(s);
+                this.abcp.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }

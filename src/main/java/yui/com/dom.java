@@ -68,7 +68,7 @@ public class dom {
 
         //将删除ABC之后得到的dom写入到IBM_COMP.XML
         DOMSource IBM_domSource = new DOMSource(IBM_document);
-        StreamResult IBM_streamResult = new StreamResult(new File("IBM_COMP.xml"));
+        StreamResult IBM_streamResult = new StreamResult(new File("IBM_COMP_DOM.xml"));
         transformer.transform(IBM_domSource, IBM_streamResult);
 
 
@@ -109,7 +109,7 @@ public class dom {
 
         //将删除IBM之后得到的dom写入到ABC_COMP.XML
         DOMSource ABC_domSource = new DOMSource(ABC_document2);
-        StreamResult ABC_streamResult = new StreamResult(new File("ABC_COMP.xml"));
+        StreamResult ABC_streamResult = new StreamResult(new File("ABC_COMP_DOM.xml"));
         transformer.transform(ABC_domSource, ABC_streamResult);
 
 

@@ -1,0 +1,113 @@
+<purchaseOrders><purchaseOrder>
+		<shipTo>
+			<name>Google</name>
+			<street>47 Eden Street</street>
+			<city>Pal alto</city>
+			<postcode>95126</postcode>
+		</shipTo>
+		<billTo>
+			<name>Robert Smith</name>
+			<street>8 Oak Avenue</street>
+			<city>New Town</city>
+			<state>AK</state>
+			<zip>95819</zip>
+		</billTo>
+		<Items>
+			<item>
+				<productName>Lapis necklace</productName>
+				<quantity>2</quantity>
+				<price>93.95</price>
+				<comment>Need this for the holidays!</comment>
+				<shipDate>1999-12-05</shipDate>
+			</item>
+			<item>
+				<productName>Diamond heart</productName>
+				<quantity>1</quantity>
+				<price>248.90</price>
+				<comment>Valentine's day packaging.</comment>
+				<shipDate>2000-02-14</shipDate>
+			</item>
+			<item>
+				<productName>Uncut diamond</productName>
+				<quantity>7</quantity>
+				<price>79.90</price>
+				<shipDate>2000-01-07</shipDate>
+			</item>
+			<item>
+				<productName>Amber ring</productName>
+				<quantity>3</quantity>
+				<price>891.90</price>
+				<comment>With no inclusions, please.</comment>
+				<shipDate>2000-01-07</shipDate>
+			</item>
+			<item>
+				<productName>Pearl necklace</productName>
+				<quantity>1</quantity>
+				<price>4879.00</price>
+				<shipDate>1999-12-05</shipDate>
+			</item>
+			<item>
+				<productName>Jade earring</productName>
+				<quantity>5</quantity>
+				<price>179.90</price>
+				<shipDate>2000-02-14</shipDate>
+			</item>
+		</Items>
+	</purchaseOrder>
+	</purchaseOrders><purchaseOrders><purchaseOrder>
+		<shipTo>
+			<name>Google</name>
+			<street>47 Eden Street</street>
+			<city>Pal alto</city>
+			<postcode>95126</postcode>
+		</shipTo>
+		<billTo>
+			<name>Robert Smith</name>
+			<street>8 Oak Avenue</street>
+			<city>New Town</city>
+			<state>AK</state>
+			<zip>95819</zip>
+		</billTo>
+		<Items>
+			<item>
+				<productName>Lapis necklace</productName>
+				<quantity>2</quantity>
+				<price>93.95</price>
+				<comment>Need this for the holidays!</comment>
+				<shipDate>1999-12-05</shipDate>
+			</item>
+			<item>
+				<productName>Diamond heart</productName>
+				<quantity>1</quantity>
+				<price>248.90</price>
+				<comment>Valentine's day packaging.</comment>
+				<shipDate>2000-02-14</shipDate>
+			</item>
+			<item>
+				<productName>Uncut diamond</productName>
+				<quantity>7</quantity>
+				<price>79.90</price>
+				<shipDate>2000-01-07</shipDate>
+			</item>
+			<item>
+				<productName>Amber ring</productName>
+				<quantity>3</quantity>
+				<price>891.90</price>
+				<comment>With no inclusions, please.</comment>
+				<shipDate>2000-01-07</shipDate>
+			</item>
+			<item>
+				<productName>Pearl necklace</productName>
+				<quantity>1</quantity>
+				<price>4879.00</price>
+				<shipDate>1999-12-05</shipDate>
+			</item>
+			<item>
+				<productName>Jade earring</productName>
+				<quantity>5</quantity>
+				<price>179.90</price>
+				<shipDate>2000-02-14</shipDate>
+			</item>
+		</Items>
+	</purchaseOrder>
+	</purchaseOrders>
