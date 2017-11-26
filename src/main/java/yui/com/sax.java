@@ -66,6 +66,14 @@ class SaxParseXml extends DefaultHandler {
 
     @Override
     public void startDocument() throws SAXException {
+        try {
+            this.abcp.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
+            this.ibmp.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
+            this.abcp.flush();
+            this.ibmp.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
