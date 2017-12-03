@@ -5,6 +5,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.management.Attribute;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -62,6 +63,24 @@ class SaxParseXml extends DefaultHandler {
         }
 
     }
+    private void startElementWrite(FileWriter writer,String localName, String qName, Attributes attributes){
+        try {
+            writer.write("<" + qName + ">");
+            if(attributes!=null){
+                int length = attributes.getLength();
+                for(int i=0;i<length;i++){
+                    String qName1 = attributes.getQName(i);
+                    if(qName1 == "comp_name") continue;
+                    String value = attributes.getValue(i);
+                    writer.write("<" + qName1 +">" + value + "</" + qName1 +">" );
+                }
+            }
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
     @Override
@@ -84,6 +103,14 @@ class SaxParseXml extends DefaultHandler {
 
         if(attributes!=null){
 
+            int length = attributes.getLength();
+            for(int i=0;i<length;i++){
+                String qName1 = attributes.getQName(i);
+                String value = attributes.getValue(i);
+                System.out.println(qName1+ ":" + value);
+
+            }
+
             String comp_name = attributes.getValue("", "comp_name");
 
             if(comp_name!=null && comp_name.equals("IBM")){
@@ -95,34 +122,18 @@ class SaxParseXml extends DefaultHandler {
         }
 
         if(flag == 0) {
-            try {
-                this.abcp.write("<" + qName + ">");
-                this.ibmp.write("<" + qName + ">");
-                this.abcp.flush();
-                this.ibmp.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            startElementWrite(abcp,localName,qName,attributes);
+            startElementWrite(ibmp,localName,qName,attributes);
         }
 
         if(flag==1){
-            try {
-                this.ibmp.write( "<"+qName+">");
-                this.ibmp.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            startElementWrite(ibmp,localName,qName,attributes);
+
         }
 
         if(flag==2){
-            //abc.write("give me five\n");
-            //this.abc.write( ("<"+qName+">\r\n"));
-            try {
-                this.abcp.write("<"+qName+">");
-                this.abcp.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            startElementWrite(abcp,localName,qName,attributes);
+
         }
     }
 

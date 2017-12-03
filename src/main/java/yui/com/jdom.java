@@ -1,5 +1,6 @@
 package yui.com;
 
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -9,6 +10,7 @@ import org.jdom.xpath.XPath;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 public class jdom {
@@ -43,6 +45,32 @@ public class jdom {
             Element parent = (Element) element.getParent();
             parent.removeContent(element);
         }
+
+        //attributes2Nodes(rootElement);
+        List<Element> list = XPath.selectNodes(rootElement,"//*[@*]");
+        Iterator<Element> iterator = list.iterator();
+        while (iterator.hasNext()){
+
+            Element next = (Element)iterator.next();
+           // List<Element> content = next.content();
+
+
+            List<Attribute> attributes = XPath.selectNodes(next, "@*");
+            int size = attributes.size();
+            for (int i=0;i<size;i++){
+                Attribute node = attributes.get(i);
+
+                Element element = new Element(node.getName());
+                element.setText(node.getValue());
+
+                next.addContent(i,element);
+
+                node.getParent().removeAttribute(node.getName());
+
+            }
+
+        }
+
 
         XMLOutputter xmlOutputter = new XMLOutputter();
         xmlOutputter.output(document,new FileWriter(XML_SINK));
