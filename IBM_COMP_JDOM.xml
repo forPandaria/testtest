@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Mr. Nobody (Altova GmbH) --><purchaseOrders>
 	
-	<purchaseOrder><comp_name>IBM</comp_name>
+	
+	
+<IBM_COMP><purchaseOrder>
 		<shipTo><export-code>3</export-code><type>US-Address</type>
 			<name>Google</name>
 			<street>47 Eden Street</street>
@@ -56,6 +58,4 @@
 				<shipDate>2000-02-14</shipDate>
 			</item>
 		</Items>
-	</purchaseOrder>
-	
-</purchaseOrders>
+	</purchaseOrder></IBM_COMP></purchaseOrders>

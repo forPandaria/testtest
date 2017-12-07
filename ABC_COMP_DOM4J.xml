@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Mr. Nobody (Altova GmbH) --><purchaseOrders>
-	<purchaseOrder><comp_name>ABC</comp_name>
+	
+	
+	
+<ABC_COMP>
+	<purchaseOrder>
 		<shipTo><export-code>1</export-code><type>EU-Address</type>
 			<name>Helen Zoe</name>
 			<street>47 Eden Street</street>
@@ -56,8 +60,7 @@
 			</item>
 		</Items>
 	</purchaseOrder>
-	
-	<purchaseOrder><comp_name>ABC</comp_name>
+	<purchaseOrder>
 		<shipTo><export-code>4</export-code><type>EU-Address</type>
 			<name>Zou</name>
 			<street>47 Eden Street</street>
@@ -113,4 +116,4 @@
 			</item>
 		</Items>
 	</purchaseOrder>
-</purchaseOrders>
+</ABC_COMP></purchaseOrders>

@@ -5,11 +5,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.management.Attribute;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 
 
@@ -20,24 +18,19 @@ public class sax {
 
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
-        //StreamResult streamResult = new StreamResult(new File("23.txt"));
-        SAXParser parser = null;
+        //构建SAXParser；
+        SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
 
-        //构建SAXParser
-        parser = SAXParserFactory.newInstance().newSAXParser();
-
-
-        //实例化  DefaultHandler对象
+        //实例化  DefaultHandler对象；
         SaxParseXml parseXml = new SaxParseXml();
-
-        //加载资源文件 转化为一个输入流
+        //加载资源文件 转化为一个输入流；
         InputStream stream = new FileInputStream("ipo.xml");
-        //调用parse()方法
+
+        //调用parse()方法；
         parser.parse(stream, parseXml);
 
-        //遍历结果
+        //程序运行结束；
         System.out.print("sax_done");
-
     }
 }
 
@@ -49,23 +42,34 @@ class SaxParseXml extends DefaultHandler {
     FileWriter ibmp = null;
 
     {
-
-
         try {
-            this.abcp = new FileWriter("ABC_COMP_SAX.xml", true);
-            this.ibmp = new FileWriter("IBM_COMP_SAX.xml", true);
-            //abcp = new PrintStream(new File("ABC_COMP_SAX.xml"));
-            //ibmp = new PrintStream(new File("IBM_COMP_SAX.xml"));
-
-            //ibmp = new PrintWriter(ibm);
+            this.abcp = new FileWriter("ABC_COMP_SAX.xml", false);
+            this.ibmp = new FileWriter("IBM_COMP_SAX.xml", false);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-    private void startElementWrite(FileWriter writer,String localName, String qName, Attributes attributes){
+
+    /*
+    * 通用的写入方法，根据传入的writerID，选用不同xml文件的writer，以便写入不同的内容；
+    * */
+    private void startElementWrite(String writerID,String localName, String qName, Attributes attributes){
+        FileWriter writer =null;
+
+        //根据writerID，选取相应xml文件的writer；
+        if(writerID.equals("ABC"))writer= this.abcp;
+        else writer=ibmp;
+
         try {
             writer.write("<" + qName + ">");
+
+            //在purchaseOrders标签下加入<ABC_COMP>或<IBM_COMP>子标签的开始部分；
+            if(qName.equals("purchaseOrders")) {
+                if (writerID.equals("ABC")) writer.write("<ABC_COMP>");
+                else writer.write("<IBM_COMP>");
+            }
+
+            //将节点的元素转化为其子节点；
             if(attributes!=null){
                 int length = attributes.getLength();
                 for(int i=0;i<length;i++){
@@ -101,14 +105,13 @@ class SaxParseXml extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
+        //输出节点的属性；
         if(attributes!=null){
-
             int length = attributes.getLength();
             for(int i=0;i<length;i++){
                 String qName1 = attributes.getQName(i);
                 String value = attributes.getValue(i);
                 System.out.println(qName1+ ":" + value);
-
             }
 
             String comp_name = attributes.getValue("", "comp_name");
@@ -121,18 +124,21 @@ class SaxParseXml extends DefaultHandler {
 
         }
 
+        //flag==0，表示该标签需要写入两个文件；
         if(flag == 0) {
-            startElementWrite(abcp,localName,qName,attributes);
-            startElementWrite(ibmp,localName,qName,attributes);
+            startElementWrite("ABC",localName,qName,attributes);
+            startElementWrite("IBM",localName,qName,attributes);
         }
 
+        //flag==1，表示该标签是IBM的内容；
         if(flag==1){
-            startElementWrite(ibmp,localName,qName,attributes);
+            startElementWrite("IBM",localName,qName,attributes);
 
         }
 
+        //flage==2，表示该标签是ABC的内容；
         if(flag==2){
-            startElementWrite(abcp,localName,qName,attributes);
+            startElementWrite("ABC",localName,qName,attributes);
 
         }
     }
@@ -142,45 +148,43 @@ class SaxParseXml extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
 
-        if(qName.equals("purchaseOrders")) flag=0;
-
-        if(flag == 0){
+        //如果该结束标签是purchaseOrders，则需要写入两个文件，并且在其之前加上</ABC_COMP>或<IBM_COMP>;
+        //否则，根据flage，判断该标签属于ABC或IBM内容，并将其写入相应文件；
+        if(qName.equals("purchaseOrders")){
 
             try {
-                this.abcp.write( ("</"+qName+">") );
-                this.ibmp.write( ("</"+qName+">") );
+                this.abcp.write( ("</ABC_COMP></"+qName+">") );
+                this.ibmp.write( ("</IBM_COMP></"+qName+">") );
                 this.abcp.flush();
                 this.ibmp.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else{
 
+            if (flag == 1) {
 
+                try {
+                    this.ibmp.write(("</" + qName + ">"));
+                    this.ibmp.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //
 
-        }
-
-        if(flag==1){
-
-            try {
-                this.ibmp.write( ("</"+qName+">"));
-                this.ibmp.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-            //
 
-        }
+            if (flag == 2) {
 
-        if(flag==2){
+                try {
+                    this.abcp.write("</" + qName + ">");
+                    this.abcp.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //
 
-            try {
-                this.abcp.write("</"+qName+">");
-                this.abcp.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-            //
-
         }
 
 
@@ -207,8 +211,6 @@ class SaxParseXml extends DefaultHandler {
 
         if(flag==1){
             try {
-                //this.ibmp.write( new String(ch) );
-
                 this.ibmp.write(s);
                 this.ibmp.flush();
             } catch (IOException e) {
